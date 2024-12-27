@@ -45,10 +45,14 @@ services:
         /usr/bin/mc mb minio/iceberg;
         /usr/bin/mc policy set public minio/warehouse;
         /usr/bin/mc policy set public minio/iceberg;
+        /usr/bin/mc admin accesskey create minio/ \
+          --name dev_access_key \
+          --access-key myaccesskey \
+          --secret-key mysecretkey;
         tail -f /dev/null
     environment:
-      - AWS_ACCESS_KEY_ID=admin
-      - AWS_SECRET_ACCESS_KEY=password
+      - AWS_ACCESS_KEY_ID=myaccesskey
+      - AWS_SECRET_ACCESS_KEY=mysecretkey
       - AWS_REGION=us-east-1
     restart: no
     depends_on:
@@ -82,8 +86,8 @@ services:
       - ./datasets:/workspace/datasets
     environment:
       - AWS_REGION=us-east-1
-      - AWS_ACCESS_KEY_ID=admin
-      - AWS_SECRET_ACCESS_KEY=password
+      - AWS_ACCESS_KEY_ID=myaccesskey
+      - AWS_SECRET_ACCESS_KEY=mysecretkey
     depends_on:
       - storage
       - catalog
